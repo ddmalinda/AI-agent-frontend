@@ -3,7 +3,9 @@
 const pagesLinkpath={
    //pages links
   homePage:"/",
-  login:"/login"
+  login:"/login",
+  singIn:"/singIn",
+  aiAgentSetupPage:"/agentSetup"
 
 }
 const linkPath ={

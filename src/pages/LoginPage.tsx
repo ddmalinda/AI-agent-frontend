@@ -1,10 +1,10 @@
 import { useState } from "react"
-import Logo from "../commen/componets/Logo";
 import { useDispatch } from "react-redux";
 import apiClient from "../util/api";
 import { setCredentials } from "../freatuers/auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pagesLinkpath } from "../path/LinkPath";
+import LoadingButton from "../commen/componets/buttons/LoadingButton";
 
 type Props = {}
 
@@ -29,6 +29,7 @@ export default function LoginPage({ }: Props) {
             const response = await apiClient.post('/api/auth/login', {
                 email: username,
                 password: password,
+                withCredentials: true
             });
             // Dispatch the action with a correctly typed payload
             dispatch(setCredentials({  authData: response.data}));
@@ -49,7 +50,7 @@ export default function LoginPage({ }: Props) {
                 autoComplete="off"
             >
                 <div className="mx-auto">
-                    <Logo />
+                     <img src="/logo.png" alt="Logo" className="rounded-2xl shadow-2xl" />
                 </div>
                 <h2 className="text-2xl font-bold text-center mb-2 font-poppins">Login</h2>
                 <input
@@ -70,13 +71,13 @@ export default function LoginPage({ }: Props) {
                 {error && (
                     <div className="text-red-600 text-center text-sm font-poppins">{error}</div>
                 )}
-                <button
-                    type="submit"
-                    className=" bg-white border rounded-2xl  border-black text-xl uppercase py-1 hover:bg-black hover:text-white transition duration-300  "
-                    disabled={loading}
-                >
-                    {loading ? "Logging in..." : "Login"}
-                </button>
+                <LoadingButton loading={loading} before="LogIn" after="Logging in..."/>
+                <div className="flex justify-center">
+                    Don't have you account?
+                    <Link to={pagesLinkpath.singIn} className="ml-1 hover:underline">
+                    Sign up
+                    </Link>
+                </div>
             </form>
 
         </div>
