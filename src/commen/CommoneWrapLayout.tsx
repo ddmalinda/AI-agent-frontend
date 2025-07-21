@@ -1,6 +1,5 @@
 import React from 'react'
 import NavBar from './navbar/NavBar'
-import UserFooter from './footer/UserFooter'
 
 type Props = {
     children: React.ReactNode
@@ -8,13 +7,12 @@ type Props = {
 
 export default function CommoneWrapLayout({ children }: Props) {
     return (
-        <div>
+        <div className="min-h-screen bg-bgcolor">
             <NavBar />
-            <div>
+            <div className=' container bg-bgcolor  mx-auto'>
                 {children}
             </div>
-            <UserFooter />
-
+            
         </div>
     )
 }

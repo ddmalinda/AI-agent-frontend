@@ -1,3 +1,4 @@
+import { linkPath } from "../../path/LinkPath"
 
 type Props = {
     displayName?:string
@@ -6,10 +7,10 @@ type Props = {
 export default function NavBar({displayName}: Props) {
     
     return (
-        <div >
-            <div className="container mx-auto justify-between flex shadow h-[80px] items-center max-md:hidden">
+        <div  className="bg-bgcolor px-5">
+            <div className="container mx-auto justify-between flex shadow z-100 bg-white   h-[80px] items-center max-md:hidden rounded-b-2xl">
             <div className="ml-5 flex items-center gap-2">
-                 <img src="/logo.png" alt="Logo" className="w-[60px]"/>
+                 <img src={linkPath.logoImage} alt="Logo" className="w-[60px]"/>
                  <div className="font-plusjakarta text-4xl">
                     AI Agent
                  </div>

@@ -4,7 +4,8 @@ import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import './App.css'
 import SingIn from './pages/SingIn'
-import AiAgentSetupPage from './pages/AiAgentSetupPage'
+import BusinessDetails from './pages/BusinessDetails'
+import ProductAddPage from './pages/ProductListPage'
 
 
 
@@ -16,7 +17,8 @@ function App() {
         <Route path={pagesLinkpath.login} element={<LoginPage />} />
         <Route path={pagesLinkpath.homePage} element={<HomePage />} />
         <Route path={pagesLinkpath.singIn} element={<SingIn/>}/>
-        <Route path={pagesLinkpath.aiAgentSetupPage} element={<AiAgentSetupPage/>}/>
+        <Route path={pagesLinkpath.businessDetails} element={<BusinessDetails/>}/>
+        <Route path={pagesLinkpath.productAddPage} element={<ProductAddPage/>}/>
       </Routes>
   )
 }

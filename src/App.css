@@ -5,8 +5,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
 @theme {
-  --font-adudiowide: "Audiowide","Poppins"sans-serif;
+  /* Custom Fonts */
+  --font-audiowide: "Audiowide", "Poppins", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-poppins: "Poppins", sans-serif;
   --font-plusjakarta: "Plus Jakarta Sans", sans-serif;
+  
+  /* Primary Colors */
+ --color-pBlue:"";
+ --color-bgcolor:#e5e7eb;
 }

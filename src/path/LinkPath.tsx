@@ -5,11 +5,12 @@ const pagesLinkpath={
   homePage:"/",
   login:"/login",
   singIn:"/singIn",
-  aiAgentSetupPage:"/agentSetup"
+  businessDetails:"/agentSetup",
+  productAddPage:"/productListPage"
 
 }
 const linkPath ={
-   
+   logoImage:"/logo.png",
 
 }
 
