@@ -4,7 +4,7 @@ import { linkPath } from "../path/LinkPath"
 import BusinessInformation from "./productListPage/BusinessInformation"
 import ProductTable from "./productListPage/ProductTable"
 import axios from "axios"
-import EditProductModal from "./productListPage/ProductModal"
+import ProductModal from "./productListPage/ProductModal"
 
 type Props = {}
 
@@ -101,7 +101,7 @@ interface Product {
 export default function ProductListPage({ }: Props) {
     const [products, setProducts] = useState<Product[]>([]);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     // Fetch products
     useEffect(() => {
@@ -120,22 +120,22 @@ export default function ProductListPage({ }: Props) {
     }, [])
 
     // Handle opening edit modal
-    const handleEditProduct = (product: Product) => {
+    const handleProduct = (product: Product) => {
         setEditingProduct(product)
-        setIsEditModalOpen(true)
+        setIsModalOpen(true)
     }
 
     // Handle closing edit modal
-    const handleCloseEditModal = () => {
-        setIsEditModalOpen(false)
+    const handleCloseModal = () => {
+        setIsModalOpen(false)
         setEditingProduct(null)
     }
 
     // Handle saving edited product
     const handleSaveEdit = async (formData: any) => {
-        if (!editingProduct) return
-
-        try {
+       try {
+        if (editingProduct) {
+            // Edit existing product
             const response = await axios.put(`/api/products/${editingProduct.id}`, {
                 ...formData,
                 price: parseFloat(formData.price)
@@ -145,9 +145,19 @@ export default function ProductListPage({ }: Props) {
             setProducts(products.map(product => 
                 product.id === editingProduct.id ? { ...product, ...response.data } : product
             ))
+        } else {
+            // Add new product
+            const response = await axios.post('/api/products', {
+                ...formData,
+                price: parseFloat(formData.price)
+            })
             
+            // Add the new product to the local state
+            setProducts([...products, response.data])
+        }
+        
             // Close modal
-            handleCloseEditModal()
+            handleCloseModal()
             
         } catch (error) {
             console.error('Error saving product:', error)
@@ -174,12 +184,12 @@ export default function ProductListPage({ }: Props) {
             tableTitels={tableTitels}
             productlist={productlist}
             handleDelete={handleDelete}
-             handleEditProduct={handleEditProduct}/>
+            handleProduct={handleProduct}/>
             {/* Edit Product Modal */}
-            <EditProductModal
-                isOpen={isEditModalOpen}
+            <ProductModal
+                isOpen={isModalOpen}
                 product={editingProduct}
-                onClose={handleCloseEditModal}
+                onClose={handleCloseModal}
                 onSave={handleSaveEdit}
             />
         </CommoneWrapLayout>

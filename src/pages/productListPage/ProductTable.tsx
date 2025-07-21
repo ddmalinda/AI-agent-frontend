@@ -16,10 +16,10 @@ type Props = {
     }[],
     handleDelete: (id: number) => void,
    
-    handleEditProduct: (product: any) => void
+    handleProduct: (product: any) => void
 }
 
-export default function ProductTable({ tableTitels, productlist,handleDelete,handleEditProduct }: Props) {
+export default function ProductTable({ tableTitels, productlist,handleDelete,handleProduct }: Props) {
     return (
         <div className="bg-white m-5 p-2 w-auto rounded-2xl ">
             <table className="w-full table-fixed">
@@ -34,7 +34,7 @@ export default function ProductTable({ tableTitels, productlist,handleDelete,han
                             )
                         })}
                         <th className={"w-12 px-4 py-2 text-right border-b"}>
-                         <AddButton/>
+                         <AddButton handleProduct={handleProduct}/>
                         </th>
                     </tr>
                 </thead>
@@ -53,7 +53,7 @@ export default function ProductTable({ tableTitels, productlist,handleDelete,han
                                     <DeleteButton handleDelete={handleDelete} id={value.id}/>
 
                                     {/* Edit Button */}
-                                    <EditeButton handleEditProduct={handleEditProduct} product={value} />
+                                    <EditeButton handleEditProduct={handleProduct} product={value} />
                                 </td>
                             </tr>
 
