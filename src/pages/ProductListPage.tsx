@@ -1,23 +1,26 @@
+import  { useEffect, useState } from "react"
 import CommoneWrapLayout from "../commen/CommoneWrapLayout"
 import { linkPath } from "../path/LinkPath"
-import BusinessInformation from "./productAddpage/BusinessInformation"
-import ProductTable from "./productAddpage/ProductTable"
+import BusinessInformation from "./productListPage/BusinessInformation"
+import ProductTable from "./productListPage/ProductTable"
+import axios from "axios"
+import EditProductModal from "./productListPage/ProductModal"
 
 type Props = {}
 
 const businessData = {
     image: linkPath.logoImage,
     name: "TechVision Electronics",
-    industry: "Electronics & Technology", 
+    industry: "Electronics & Technology",
     type: "E-commerce Retailer"
 }
 
-const tableTitels=[
-   {title:'No', width: 'w-16'}, // Small width for product number
-    {title:'Name', width: 'w-30'}, // Medium width for name
-    {title:'Discription', width: 'w-60'}, // Large width for description
-    {title:'categarory', width: 'w-15'}, // Medium width for category
-    {title:'Price', width: 'w-15'},  // Small width for price
+const tableTitels = [
+    { title: 'No', width: 'w-16' }, // Small width for product number
+    { title: 'Name', width: 'w-30' }, // Medium width for name
+    { title: 'Discription', width: 'w-60' }, // Large width for description
+    { title: 'categarory', width: 'w-15' }, // Medium width for category
+    { title: 'Price', width: 'w-15' },  // Small width for price
 
 ]
 const productlist = [
@@ -87,14 +90,98 @@ const productlist = [
     }
 ]
 
-export default function ProductListPage({}: Props) {
-  return (
-    <CommoneWrapLayout>
-    <div className="flex">
-            <BusinessInformation image={businessData.image} name={businessData.name} industry={"Industry: "+businessData.industry} type={"Type: "+businessData.type}/>
+interface Product {
+    id: number
+    name: string
+    price: number
+    category: string
+    description: string
+}
 
-</div>
-<ProductTable tableTitels={tableTitels} productlist={productlist}/>
-    </CommoneWrapLayout>
-  )
+export default function ProductListPage({ }: Props) {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+    // Fetch products
+    useEffect(() => {
+
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('/api/products')
+                setProducts(response.data)
+            } catch (error) {
+                   // Use mock data if API fails
+                console.error('Error fetching products:', error)
+            }
+        }
+
+        fetchProducts();
+    }, [])
+
+    // Handle opening edit modal
+    const handleEditProduct = (product: Product) => {
+        setEditingProduct(product)
+        setIsEditModalOpen(true)
+    }
+
+    // Handle closing edit modal
+    const handleCloseEditModal = () => {
+        setIsEditModalOpen(false)
+        setEditingProduct(null)
+    }
+
+    // Handle saving edited product
+    const handleSaveEdit = async (formData: any) => {
+        if (!editingProduct) return
+
+        try {
+            const response = await axios.put(`/api/products/${editingProduct.id}`, {
+                ...formData,
+                price: parseFloat(formData.price)
+            })
+            
+            // Update the product in the local state
+            setProducts(products.map(product => 
+                product.id === editingProduct.id ? { ...product, ...response.data } : product
+            ))
+            
+            // Close modal
+            handleCloseEditModal()
+            
+        } catch (error) {
+            console.error('Error saving product:', error)
+            alert('Failed to save product. Please try again.')
+        }
+    }
+
+
+    const handleDelete = async (id: number) => {
+        if (window.confirm('Are you sure you want to delete this product?')) {
+            try {
+                await axios.delete(`/api/products/${id}`)
+            } catch (error) {
+                console.error('Error deleting product:', error)
+            }
+        }
+    }
+    return (
+        <CommoneWrapLayout>
+            <div className="flex">
+                <BusinessInformation image={businessData.image} name={businessData.name} industry={"Industry: " + businessData.industry} type={"Type: " + businessData.type} />
+            </div>
+            <ProductTable 
+            tableTitels={tableTitels}
+            productlist={productlist}
+            handleDelete={handleDelete}
+             handleEditProduct={handleEditProduct}/>
+            {/* Edit Product Modal */}
+            <EditProductModal
+                isOpen={isEditModalOpen}
+                product={editingProduct}
+                onClose={handleCloseEditModal}
+                onSave={handleSaveEdit}
+            />
+        </CommoneWrapLayout>
+    )
 }
