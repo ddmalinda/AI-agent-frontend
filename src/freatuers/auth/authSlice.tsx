@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "../../app/store";
+import { createSlice } from "@reduxjs/toolkit";
+import { tokenUtils } from "../../util/tokenUtils";
+import { userDataUtils } from "../../util/userDataUtils";
 
+
+//Props Types
 interface AuthState {
-    token: string | null;
-    refreshToken:string | null;
     userId: number | null;
     email:string | null;
     firstName: string | null;
@@ -12,9 +13,14 @@ interface AuthState {
     isAuthenticated: boolean;
 }
 
-const initialState: AuthState = {
-    token: null,
-    refreshToken:null,
+type authData={
+    userId: number ,
+    email:string,
+    firstName: string ,
+    lastName: string ,
+}
+
+const initialState: AuthState =  {
     userId: null,
     email:null,
     firstName: null,
@@ -22,16 +28,6 @@ const initialState: AuthState = {
     isAuthenticated: false,
 
 };
-type authData={
-    token: string,
-    refreshToken:string,
-    userId: number ,
-    email:string,
-    firstName: string ,
-    lastName: string ,
-}
-
-
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -39,26 +35,25 @@ const authSlice = createSlice({
         setCredentials: (state, action: PayloadAction<{ authData: authData }>) => {
             console.log(action.payload)
             const { authData } = action.payload;
-            state.token = authData.token;
-            state.refreshToken =authData.refreshToken;
             state.userId= authData.userId;
             state.email=authData.email;
             state.firstName=authData.firstName;
             state.lastName=authData.lastName;
             state.isAuthenticated = true;
+
         },
-        logOut: (state) => {
-             state.token = null;
-            state.refreshToken = null;
+        logout: (state) => {
+             
             state.userId = null;
             state.email = null;
             state.firstName = null;
             state.lastName = null;
             state.isAuthenticated = false;
+            tokenUtils.removeToken();
+            userDataUtils.removeUserData();
         },
     }
 });
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, logout } = authSlice.actions;
 export default authSlice.reducer;
-export const selectCurrentToken = (state: RootState) => state.auth.token;

@@ -1,11 +1,13 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux";
-import apiClient from "../util/api";
+import LoadingButton from "../commen/componets/buttons/LoadingButton";
 import { setCredentials } from "../freatuers/auth/authSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { pagesLinkpath } from "../path/LinkPath";
-import LoadingButton from "../commen/componets/buttons/LoadingButton";
-
+import apiClient from "../util/api";
+import { useState } from "react"
+import Cookies from 'js-cookie';
+import { tokenUtils } from "../util/tokenUtils";
+import { userDataUtils } from "../util/userDataUtils";
 type Props = {}
 
 export default function LoginPage({ }: Props) {
@@ -16,8 +18,6 @@ export default function LoginPage({ }: Props) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
-
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,8 +31,19 @@ export default function LoginPage({ }: Props) {
                 password: password,
                 withCredentials: true
             });
-            // Dispatch the action with a correctly typed payload
-            dispatch(setCredentials({  authData: response.data}));
+
+            // Store token in cookies
+            tokenUtils.setToken(response.data.token);
+            
+            // Store user data in cookies
+            userDataUtils.setUserData(response.data);
+
+            console.log('Stored token:', Cookies.get('token'));
+            console.log('Stored user data:', userDataUtils.getUserData());
+
+            // Update redux store
+            dispatch(setCredentials({ authData: response.data }));
+            
             // Navigate to home page after successful login
             navigate(pagesLinkpath.homePage);
         } catch (error) {
@@ -50,7 +61,7 @@ export default function LoginPage({ }: Props) {
                 autoComplete="off"
             >
                 <div className="mx-auto">
-                     <img src="/logo.png" alt="Logo" className="rounded-2xl shadow-2xl" />
+                    <img src="/logo.png" alt="Logo" className="rounded-2xl shadow-2xl" />
                 </div>
                 <h2 className="text-2xl font-bold text-center mb-2 font-poppins">Login</h2>
                 <input
@@ -71,11 +82,11 @@ export default function LoginPage({ }: Props) {
                 {error && (
                     <div className="text-red-600 text-center text-sm font-poppins">{error}</div>
                 )}
-                <LoadingButton loading={loading} before="LogIn" after="Logging in..."/>
+                <LoadingButton loading={loading} before="LogIn" after="Logging in..." />
                 <div className="flex justify-center">
                     Don't have you account?
                     <Link to={pagesLinkpath.singIn} className="ml-1 hover:underline">
-                    Sign up
+                        Sign up
                     </Link>
                 </div>
             </form>

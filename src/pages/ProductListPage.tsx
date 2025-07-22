@@ -19,7 +19,7 @@ const tableTitels = [
     { title: 'No', width: 'w-16' }, // Small width for product number
     { title: 'Name', width: 'w-30' }, // Medium width for name
     { title: 'Discription', width: 'w-60' }, // Large width for description
-    { title: 'categarory', width: 'w-15' }, // Medium width for category
+    { title: 'Categarory', width: 'w-15' }, // Medium width for category
     { title: 'Price', width: 'w-15' },  // Small width for price
 
 ]
