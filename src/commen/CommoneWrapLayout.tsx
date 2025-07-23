@@ -1,6 +1,5 @@
 import React from 'react'
 import NavBar from './navbar/NavBar'
-import { useSelector } from 'react-redux'
 import { store } from '../app/store'
 
 type Props = {
