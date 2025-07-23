@@ -6,12 +6,15 @@ import { pagesLinkpath } from "../../../path/LinkPath";
 type Props = {}
 
 export default function LogoutButton({}: Props) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-const handleLogout=()=>{
-  dispatch(logout())
-  navigate(pagesLinkpath.login)
-}
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLogout=()=>{
+    const confirmLogout = window.confirm("Are you sure you want to logout?");
+      if(confirmLogout){
+      dispatch(logout())
+      navigate(pagesLinkpath.login)
+    }
+  }
 
   return (
     <button 
