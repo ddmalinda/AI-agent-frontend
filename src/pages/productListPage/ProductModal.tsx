@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import CloseButoon from '../../commen/componets/buttons/CloseButoon'
+import SubmitButton from '../../commen/componets/buttons/SubmitButton'
+import CancelButton from '../../commen/componets/buttons/CancelButton'
 
 interface Product {
     id: number
@@ -124,19 +126,9 @@ export default function ProductModal({ isOpen, product, onClose, onSave }: EditP
 
                     {/* Buttons */}
                     <div className="flex justify-end space-x-3 pt-4">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                        >
-                            Save Changes
-                        </button>
+                        <CancelButton onClose={onClose}/>
+                        <SubmitButton loading={true}/>
+                        
                     </div>
                 </form>
             </div>

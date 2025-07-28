@@ -1,18 +1,20 @@
 
 
-const pagesLinkpath={
+const pagesLinkpath = {
    //pages links
-  homePage:"/",
-  login:"/login",
-  singIn:"/singIn",
-  businessDetails:"/agentSetup",
-  productAddPage:"/productListPage"
+   public: "/*",
+   homePage: "/",
+   login: "/login",
+   singIn: "/singIn",
+   businessDetails: "/agentSetup",
+   productListPage: "/products"
+
 
 }
-const linkPath ={
-   logoImage:"/logo.png",
+const linkPath = {
+   logoImage: "/logo.png",
 
 }
 
 
-export{linkPath,pagesLinkpath}
+export { linkPath, pagesLinkpath }
