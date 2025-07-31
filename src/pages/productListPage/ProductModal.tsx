@@ -1,42 +1,43 @@
 import React, { useState, useEffect } from 'react'
 import CloseButoon from '../../commen/componets/buttons/CloseButoon'
-import SubmitButton from '../../commen/componets/buttons/SubmitButton'
-import CancelButton from '../../commen/componets/buttons/CancelButton'
+import ProductFrom from './ProductFrom'
+
 
 interface Product {
-    id: number
+    id?: number| undefined
     name: string
     price: number
     category: string
     description: string
 }
 
-interface EditProductModalProps {
-    isOpen: boolean
-    product: Product | null
-    onClose: () => void
-    onSave: (formData: any) => void
+type EditProductModalProps ={
+    isOpen: boolean,
+    tempProductDeatils: Product | null,
+    onClose: () => void,
+    onSave: (formData: any) => void,
+    loadingProductFrom:boolean,
 }
 
-export default function ProductModal({ isOpen, product, onClose, onSave }: EditProductModalProps) {
+export default function ProductModal({ isOpen, tempProductDeatils, onClose, onSave ,loadingProductFrom}: EditProductModalProps) {
     const [formData, setFormData] = useState({
         name: '',
-        price: '',
+        price: 0,
         category: '',
         description: ''
     })
 
     // Fill form with product data when product changes
     useEffect(() => {
-        if (product) {
+        if (tempProductDeatils) {
             setFormData({
-                name: product.name,
-                price: product.price.toString(),
-                category: product.category,
-                description: product.description
+                name: tempProductDeatils.name,
+                price: tempProductDeatils.price,
+                category: tempProductDeatils.category,
+                description: tempProductDeatils.description
             })
         }
-    }, [product])
+    }, [tempProductDeatils])
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -52,7 +53,7 @@ export default function ProductModal({ isOpen, product, onClose, onSave }: EditP
     }
 
     // Don't render if modal is not open
-    if (!isOpen || !product) return null
+    if (!isOpen) return null
 
     return (
         // Dark background overlay - this is the key part!
@@ -64,73 +65,14 @@ export default function ProductModal({ isOpen, product, onClose, onSave }: EditP
                     <h2 className="text-xl font-bold text-gray-900">Edit Product</h2>
                     <CloseButoon onClose={onClose} />
                 </div>
-
-                {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Product Name
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Price
-                        </label>
-                        <input
-                            type="number"
-                            name="price"
-                            value={formData.price}
-                            onChange={handleInputChange}
-                            step="0.01"
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Category
-                        </label>
-                        <input
-                            type="text"
-                            name="category"
-                            value={formData.category}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Description
-                        </label>
-                        <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            rows={3}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            required
-                        />
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="flex justify-end space-x-3 pt-4">
-                        <CancelButton onClose={onClose}/>
-                        <SubmitButton loading={true}/>
-                        
-                    </div>
-                </form>
+                <ProductFrom
+                 handleSubmit={handleSubmit}
+                 formData={formData}
+                 handleInputChange={handleInputChange}
+                 onClose={onClose}
+                 loadingProductFrom={loadingProductFrom}
+                 />
+                
             </div>
         </div>
     )

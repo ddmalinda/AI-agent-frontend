@@ -1,13 +1,16 @@
+interface Product {
+    id?: number| undefined
+    name: string
+    price: number
+    category: string
+    description: string
+}
+
 type Props = {
     handleEditProduct: (product: any) => void,
-    product: {
-    id: number;
-    name: string;
-    description: string;
-    category: string;
-    price: number;
+    product:Product
 }
-}
+
 
 export default function EditeButton({handleEditProduct,product}: Props) {
     return (

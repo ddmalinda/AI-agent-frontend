@@ -31,11 +31,12 @@ type BusinessModelProps = {
   businessDetails?: BusinessDetails
   onClose: () => void
   onSave: (formData: any) => void
+  loadingForm:boolean,
 }
 
 
-export default function BusinessModal({ isOpen, businessDetails, onClose, onSave }: BusinessModelProps) {
-  const [loading, setLoading] = useState(false)
+export default function BusinessModal({ isOpen, businessDetails, onClose, onSave,loadingForm }: BusinessModelProps) {
+
   const [error, setError] = useState("")
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
@@ -114,7 +115,6 @@ export default function BusinessModal({ isOpen, businessDetails, onClose, onSave
     }
     
     onSave(formData)
-    setLoading(true)
   }
 
   if (!isOpen) return null
@@ -131,9 +131,9 @@ export default function BusinessModal({ isOpen, businessDetails, onClose, onSave
   businessType={businessType}
   businessIndustry={businessIndustry}
   handleLogoUpload={handleLogoUpload}
-  loading={loading}
   logoPreview={logoPreview}
   error={error} 
+  loadingForm={loadingForm}
 />
       </div>
     </div >

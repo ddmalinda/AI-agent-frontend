@@ -21,9 +21,9 @@ type Props = {
     businessType: Array<{ name: string; value: string }>;
     businessIndustry: Array<{ name: string; value: string }>;
     handleLogoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    loading: boolean;
     logoPreview: string | null;
     error?: string;
+    loadingForm:boolean;
 }
 
 export default function BusinessForm({
@@ -34,9 +34,9 @@ export default function BusinessForm({
     businessType,
     businessIndustry,
     handleLogoUpload,
-    loading,
     logoPreview,
-    error
+    error,
+    loadingForm
 }: Props) {
     return (
         <form onSubmit={hadleSubmit} className="bg-white shadow rounded-lg  p-6">
@@ -130,7 +130,7 @@ export default function BusinessForm({
                     {/* Buttons */}
                     <div className="flex justify-end space-x-3 pt-4">
                         <CancelButton onClose={onClose} />
-                        <SubmitButton loading={loading} />
+                        <SubmitButton loading={loadingForm} />
                     </div>
                 </div>
             </div>

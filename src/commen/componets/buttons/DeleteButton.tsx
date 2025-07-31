@@ -1,6 +1,6 @@
 type Props = {
-    handleDelete: (id: number) => void,
-    id:number
+    handleDelete: (id?:number) => void,
+    id?:number
 }
 
 export default function DeleteButton({handleDelete,id }: Props) {

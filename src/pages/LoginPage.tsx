@@ -34,7 +34,7 @@ export default function LoginPage({ }: Props) {
 
             // Store token in cookies
             tokenUtils.setToken(response.data.token);
-            
+
             // Store user data in cookies
             userDataUtils.setUserData(response.data);
 
@@ -43,7 +43,7 @@ export default function LoginPage({ }: Props) {
 
             // Update redux store
             dispatch(setCredentials({ authData: response.data }));
-            
+
             // Navigate to home page after successful login
             navigate(pagesLinkpath.homePage);
         } catch (error) {
@@ -65,19 +65,25 @@ export default function LoginPage({ }: Props) {
                 </div>
                 <h2 className="text-2xl font-bold text-center mb-2 font-poppins">Login</h2>
                 <input
+                    id="email"
+                    name="email"
                     type="email"
                     placeholder="Email"
                     className="bg-black text-white rounded-2xl h-10  font-poppins placeholder-white/40 text-center"
                     value={username}
                     onChange={e => setUsername(e.target.value)}
+                    autoComplete="email"
                 />
                 <input
+                    id="password"
+                    name="password"
                     type="password"
                     placeholder="Password"
                     className="bg-black text-white rounded-2xl h-10  font-poppins placeholder-white/40 text-center"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     onContextMenu={e => e.preventDefault()}
+                    autoComplete="current-password"
                 />
                 {error && (
                     <div className="text-red-600 text-center text-sm font-poppins">{error}</div>
