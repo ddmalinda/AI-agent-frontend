@@ -7,7 +7,8 @@ const pagesLinkpath = {
    login: "/login",
    singIn: "/singIn",
    businessDetails: "/agentSetup",
-   productListPage: "/products"
+   productListPage: "/products",
+   aiAgent:"/aiagent",
 
 
 }

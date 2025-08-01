@@ -8,6 +8,8 @@ import { linkPath } from "../path/LinkPath"
 import { useSelector } from "react-redux"
 import apiClient from "../util/api"
 import { useParams } from "react-router-dom"
+import AIAgentPageButoon from "../commen/componets/buttons/AIAgentPageButoon"
+import SlideChatAIAgent from "../commen/SlideChatAIAgent"
 
 type Props = {}
 
@@ -171,8 +173,8 @@ export default function ProductListPage({ }: Props) {
     const handleDelete = async (id?: number) => {
         if (window.confirm('Are you sure you want to delete this product?')) {
             try {
-                await apiClient.delete(`api/businesse/${businessId}/products/${id}`)
-                setProductsList(productsList.filter(product => product.id !== id))
+                const Response=await apiClient.delete(`api/businesse/${businessId}/products/${id}`)
+                setProductsList(productsList.filter(product => product.id !== Response.data.id))
             } catch (error) {
                 console.error('Error deleting product:', error)
             }
@@ -181,13 +183,17 @@ export default function ProductListPage({ }: Props) {
 
     return (
         <CommoneWrapLayout>
-            <div className="flex">
+                 <SlideChatAIAgent/>
+            <div className="flex justify-between mx-5 my-5 ">
                 <BusinessInformation
                     image={linkPath.logoImage}
                     name={businessData?.name || 'Unknown Business'}
                     industry={"Industry: " + (businessData?.industry || 'N/A')}
                     type={"Type: " + (businessData?.type || 'N/A')}
                 />
+                <div className="left">
+                <AIAgentPageButoon/>
+                </div>
             </div>
             {loading ? (
                 <div className="text-center py-8">Loading products...</div>

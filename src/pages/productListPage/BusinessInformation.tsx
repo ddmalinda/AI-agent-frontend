@@ -12,7 +12,10 @@ type Props = {
 export default function BusinessInformation({image,name,type,industry }: Props) {
   return (
     <div>
-        <div className="bg-white ml-5 mt-5 py-2 px-5 rounded-2xl  grid justify-center" >
+        <div className="bg-white py-2 px-5 rounded-2xl  grid justify-center" >
+          <div>
+            
+          </div>
             <img src={image} alt="business logo image" className="w-[200px] h-[200px] justify-center mx-auto"/>
             <div className="gap-2">
                 <SubTitle title={name}/>
