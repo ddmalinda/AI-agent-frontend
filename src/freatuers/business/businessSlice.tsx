@@ -22,6 +22,7 @@ interface BusinessDetails {
 export const fetchBusinessDetails = createAsyncThunk(
     pagesLinkpath.homePage, async (userId: number) => {
         const response = await apiClient.get(`/api/users/${userId}/businesses`);
+        console.log(response.data)
         return response.data;
     })
 // Initial State
