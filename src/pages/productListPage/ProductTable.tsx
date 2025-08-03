@@ -10,6 +10,7 @@ interface Product {
     price: number
     category: string
     description: string
+    stock:number
 }
 
 type Props = {
@@ -52,6 +53,7 @@ export default function ProductTable({ tableTitels, productlist,handleDelete,han
                                 <td className="w-80 px-4 py-2 ">{value.description}</td>
                                 <td className="w-25 px-4 py-2 ">{value.category}</td>
                                 <td className="w-10 px-4 py-2 ">{value.price}</td>
+                                <td className="w-10 px-4 py-2 ">{value.stock}</td>
                                 <td className="flex px-4 py-2 justify-between">
                                     {/* Delete Button */}
                                     <DeleteButton handleDelete={handleDelete} id={value.id}/>

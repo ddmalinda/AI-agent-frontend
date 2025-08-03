@@ -9,6 +9,7 @@ interface Product {
     price: number
     category: string
     description: string
+    stock:number
 }
 
 type EditProductModalProps ={
@@ -24,7 +25,8 @@ export default function ProductModal({ isOpen, tempProductDeatils, onClose, onSa
         name: '',
         price: 0,
         category: '',
-        description: ''
+        description: '',
+        stock:0
     })
 
     // Fill form with product data when product changes
@@ -34,7 +36,8 @@ export default function ProductModal({ isOpen, tempProductDeatils, onClose, onSa
                 name: tempProductDeatils.name,
                 price: tempProductDeatils.price,
                 category: tempProductDeatils.category,
-                description: tempProductDeatils.description
+                description: tempProductDeatils.description,
+                stock:tempProductDeatils.stock
             })
         }
     }, [tempProductDeatils])

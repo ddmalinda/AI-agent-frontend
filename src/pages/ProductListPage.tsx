@@ -22,9 +22,10 @@ interface businessData {
 const tableTitels = [
     { title: 'No', width: 'w-16' }, // Small width for product number
     { title: 'Name', width: 'w-30' }, // Medium width for name
-    { title: 'Discription', width: 'w-60' }, // Large width for description
+    { title: 'Discription', width: 'w-40' }, // Large width for description
     { title: 'Categarory', width: 'w-15' }, // Medium width for category
     { title: 'Price', width: 'w-15' },  // Small width for price
+    {title :"stock",width:'w-15'}
 
 ]
 interface Product {
@@ -33,6 +34,7 @@ interface Product {
     price: number
     category: string
     description: string
+    stock:number
 }
 
 export default function ProductListPage({ }: Props) {
@@ -103,6 +105,7 @@ export default function ProductListPage({ }: Props) {
                 const response = await apiClient.get(`api/businesse/${businessId}/products`)
                 setProductsList(response.data)
                 setLoading(false)
+                console.log(response.data)
             } catch (errorAPI) {
                 // Use mock data if API fails
                 setLoading(false)
@@ -119,7 +122,8 @@ export default function ProductListPage({ }: Props) {
             name: '',
             price: 0,
             category: '',
-            description: ''
+            description: '',
+            stock:0
         })
         setIsModalOpen(true)
     }
@@ -183,7 +187,7 @@ export default function ProductListPage({ }: Props) {
 
     return (
         <CommoneWrapLayout>
-                 <SlideChatAIAgent/>
+                 <SlideChatAIAgent businessId={businessId}/>
             <div className="flex justify-between mx-5 my-5 ">
                 <BusinessInformation
                     image={linkPath.logoImage}
@@ -192,7 +196,7 @@ export default function ProductListPage({ }: Props) {
                     type={"Type: " + (businessData?.type || 'N/A')}
                 />
                 <div className="left">
-                <AIAgentPageButoon/>
+                <AIAgentPageButoon businessId={businessId}/>
                 </div>
             </div>
             {loading ? (

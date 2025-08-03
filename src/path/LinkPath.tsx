@@ -9,6 +9,7 @@ const pagesLinkpath = {
    businessDetails: "/agentSetup",
    productListPage: "/products",
    aiAgent:"/aiagent",
+   testpage:"/test"
 
 
 }

@@ -8,6 +8,7 @@ type Props = {
         price: number;
         category: string;
         description: string;
+        stock:number;
     },
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void,
     onClose: () => void,
@@ -55,6 +56,21 @@ export default function ProductFrom({ handleSubmit, formData, handleInputChange,
                     name="category"
                     value={formData.category}
                     onChange={handleInputChange}
+                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+            </div>
+
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Stock
+                </label>
+                <input
+                    type="number"
+                    name="stock"
+                    value={formData.stock}
+                    onChange={handleInputChange}
+                    step="10"
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     required
                 />

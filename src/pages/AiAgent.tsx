@@ -1,11 +1,10 @@
 import { useState } from "react"
-import CommoneWrapLayout from "../commen/CommoneWrapLayout"
 import SubTitle from "../commen/componets/titles/SubTitle"
 import ReplyMessegeAnimetion from "../commen/componets/animetions/ReplyMessegeAnimetion"
 import apiClient from "../util/api"
 import MessageInputBox from "./aiAgent/MessageInputBox"
 import MessageList from "./aiAgent/MessageList"
-import SlideChatAIAgent from "../commen/SlideChatAIAgent"
+import { useParams } from "react-router-dom"
 
 type Message = {
     id: number
@@ -17,6 +16,8 @@ type Message = {
 type Props = {}
 
 export default function AiAgent({ }: Props) {
+    const { businessId } = useParams<{ businessId: string }>();
+
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 1,
@@ -41,19 +42,33 @@ export default function AiAgent({ }: Props) {
         setMessages(prev => [...prev, userMessage])
         setInputMessage("")
         setIsLoading(true)
+        try{
+            
+            const response = await apiClient.post(`/api/aiagent/${businessId}/generate`, {
+                prompt: inputMessage
+            })
 
-        const response = await apiClient.post('/api/aiagent/generate', {
-            prompt: inputMessage
-        })
-
-        const aiMessage: Message = {
-            id: Date.now() + 1,
-            text: response.data,
-            sender: 'ai',
-            timestamp: new Date()
+            const aiMessage: Message = {
+                id: Date.now() + 1,
+                text: response.data,
+                sender: 'ai',
+                timestamp: new Date()
+            }
+            setMessages(prev => [...prev, aiMessage])
+            setIsLoading(false)
+        }catch(e){
+              setIsLoading(false)
+              console.log(e)
+              const aiMessage: Message = {
+                id: Date.now() + 1,
+                text: "Something went wrong. Please try again later.",
+                sender: 'ai',
+                timestamp: new Date()
+            }
+            setMessages(prev => [...prev, aiMessage])
+           
         }
-        setMessages(prev => [...prev, aiMessage])
-        setIsLoading(false)
+
     }
 
     const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -64,9 +79,7 @@ export default function AiAgent({ }: Props) {
     }
 
     return (
-        <CommoneWrapLayout>
-            <SlideChatAIAgent/>
-            <div className="container mx-auto px-4 py-6 rounded-2xl max-w-4xl bg-white  shadow-md p-6 m-5">
+        <div className="container mx-auto px-4 py-6 rounded-2xl max-w-4xl bg-white  shadow-md p-6 m-5">
                 {/* Header */}
                 <div className=" ">
                     <div className="text-center">
@@ -97,6 +110,5 @@ export default function AiAgent({ }: Props) {
                     />
                 </div>
             </div>
-        </CommoneWrapLayout>
     )
 }

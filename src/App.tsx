@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage'
 import SingIn from './pages/SingIn'
 import './App.css'
 import AiAgent from './pages/AiAgent'
+import TestPage from './pages/TestPage'
 
 
 
@@ -22,10 +23,11 @@ function App() {
           <Routes>
             <Route path={pagesLinkpath.homePage} element={<HomePage />} />
             <Route path={pagesLinkpath.productListPage + "/:businessId"} element={<ProductAddPage />} />
-            <Route path={pagesLinkpath.aiAgent} element={<AiAgent />} />
+            <Route path={pagesLinkpath.aiAgent + "/:businessId"} element={<AiAgent />} />
           </Routes>
         </AuthGuard>
       } />
+      <Route path={pagesLinkpath.testpage} element={<TestPage />} />
     </Routes>
   )
 }

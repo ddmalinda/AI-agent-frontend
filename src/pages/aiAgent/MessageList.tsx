@@ -1,5 +1,6 @@
 import { motion,AnimatePresence } from "framer-motion"
 import { useEffect, useRef } from "react"
+import formatMessageText from "../../util/formatMessageText"
 
 type Props = {
     messages:Message[]
@@ -21,6 +22,8 @@ export default function MessageList({messages }: Props) {
             block: 'end'
         })
     }, [messages])
+
+
     return (
         <>
         <div className="space-y-3">
@@ -44,9 +47,7 @@ export default function MessageList({messages }: Props) {
                         }}
                         className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
-                        <motion.div
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
+                        <div
                             className={`
                                 max-w-xs lg:max-w-md px-4 py-2 rounded-2xl
                                 ${message.sender === 'user'
@@ -55,7 +56,12 @@ export default function MessageList({messages }: Props) {
                                 }
                             `}
                         >
-                            <p className="text-sm">{message.text}</p>
+                            <div 
+                                    className="text-sm prose prose-sm max-w-none"
+                                    dangerouslySetInnerHTML={{ 
+                                        __html: formatMessageText(message.text) 
+                                    }}
+                                />
                             <p className={`text-xs mt-1 ${
                                 message.sender === 'user' ? 'text-red-100' : 'text-gray-500'
                             }`}>
@@ -64,7 +70,7 @@ export default function MessageList({messages }: Props) {
                                     minute: '2-digit'
                                 })}
                             </p>
-                        </motion.div>
+                        </div>
                     </motion.div>
                 ))}
             </AnimatePresence>

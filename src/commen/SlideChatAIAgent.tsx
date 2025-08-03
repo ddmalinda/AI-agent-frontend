@@ -5,15 +5,18 @@ import CloseButoon from "./componets/buttons/CloseButoon"
 import MessageList from "../pages/aiAgent/MessageList"
 import ReplyMessegeAnimetion from "./componets/animetions/ReplyMessegeAnimetion"
 import MessageInputBox from "../pages/aiAgent/MessageInputBox"
+import { motion, AnimatePresence } from "framer-motion"
 
-type Props = {}
+type Props = {
+    businessId:string | undefined
+}
 interface Message {
     id: number
     text: string
     sender: 'user' | 'ai'
     timestamp: Date
 }
-export default function SlideChatAIAgent({ }: Props) {
+export default function SlideChatAIAgent({ businessId}: Props) {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: 1,
@@ -26,7 +29,7 @@ export default function SlideChatAIAgent({ }: Props) {
     const [isLoading, setIsLoading] = useState(false)
     const [isChatOpen, setIsChatOpen] = useState(false)
 
-    
+
     const handleSendMessage = async () => {
         if (!inputMessage.trim()) return
 
@@ -41,7 +44,7 @@ export default function SlideChatAIAgent({ }: Props) {
         setInputMessage("")
         setIsLoading(true)
 
-        const response = await apiClient.post('/api/aiagent/generate', {
+        const response = await apiClient.post(`api/aiagent/1/generate`, {
             prompt: inputMessage
         })
 
@@ -61,7 +64,7 @@ export default function SlideChatAIAgent({ }: Props) {
             handleSendMessage()
         }
     }
-    const onClose=()=>{
+    const onClose = () => {
         setIsChatOpen(!isChatOpen)
     }
 
@@ -70,20 +73,37 @@ export default function SlideChatAIAgent({ }: Props) {
             <div className="fixed bottom-6 right-6">
                 <FloatingActionButton onClick={setIsChatOpen} state={isChatOpen} />
             </div>
-           {isChatOpen && (
-            <div className="absolute bottom-16 bg-white right-0 m-6 shadow w-80 h-9/12 rounded-2xl justify-between items-start">
-                <div className="bg-red-700 text-white p-4 rounded-t-2xl flex justify-between items-center">
+            <AnimatePresence>
+
+                {isChatOpen && (
+                    <motion.div className="fixed bottom-16 bg-white right-0 m-6 shadow w-80 h-9/12 rounded-2xl justify-between items-start"
+                        initial={{
+                            opacity: 0, scale: 1
+                        }}
+                        animate={{ 
+                            opacity: 1,scale: 1       
+                        }}
+                        exit={{
+                            opacity: 0,scale: 1        
+                        }}
+                        transition={{
+                            type: "tween",            
+                            ease: "easeInOut",          
+                            duration: 0.3          
+                        }}    
+
+                    >
+                        <div className="bg-red-700 text-white p-4 rounded-t-2xl flex justify-between items-center">
                             <div>
                                 <h3 className="font-semibold">AI Agent</h3>
                                 <p className="text-sm text-blue-100">Online</p>
                             </div>
-                            <CloseButoon onClose={onClose} style ={"text-white hover:text-gray-200 transition-colors"}/>
+                            <CloseButoon onClose={onClose} style={"text-white hover:text-gray-200 transition-colors"} />
                         </div>
-                        <div className="h-96 flex flex-col">
+                        <div className=" h-96 flex flex-col ">
                             {/* Messages Area */}
-                            <div className="flex-1 p-3 overflow-y-auto space-y-2">
-                                <MessageList messages={messages}/>
-                                
+                            <div className="flex-1 p-3 overflow-y-auto scrollbar-hide space-y-2 ">
+                                <MessageList messages={messages} />
                                 {/* Loading indicator */}
                                 {isLoading && (
                                     <div className="flex justify-start">
@@ -103,8 +123,9 @@ export default function SlideChatAIAgent({ }: Props) {
                                 />
                             </div>
                         </div>
-            </div>
-           )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     )
 }
