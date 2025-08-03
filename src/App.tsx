@@ -1,4 +1,4 @@
-import ProductAddPage from './pages/ProductListPage'
+import ProductListPage from './pages/ProductListPage'
 import { Routes, Route } from 'react-router-dom'
 import { pagesLinkpath } from './path/LinkPath'
 import AuthGuard from './commen/AuthGuard'
@@ -22,7 +22,7 @@ function App() {
         <AuthGuard>
           <Routes>
             <Route path={pagesLinkpath.homePage} element={<HomePage />} />
-            <Route path={pagesLinkpath.productListPage + "/:businessId"} element={<ProductAddPage />} />
+            <Route path={pagesLinkpath.productListPage + "/:businessId"} element={<ProductListPage />} />
             <Route path={pagesLinkpath.aiAgent + "/:businessId"} element={<AiAgent />} />
           </Routes>
         </AuthGuard>

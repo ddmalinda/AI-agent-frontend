@@ -24,24 +24,21 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 if (tokenUtils.isLoggedIn()) {
 
                     const userData = userDataUtils.getUserData();
-                    console.log("isAuthenticated",!isAuthenticated,"userData",userData)
 
                     if (userData && !isAuthenticated) {
                         // User has valid token but Redux store is empty - restore auth state
                         dispatch(setCredentials({ authData: userData }));
-                        console.log('true')
+                        
                     } 
                     else if(!userData){
                         try {
                             const response = await apiClient.get('/api/auth/profile')
-                            console.log("fetch data when not user data in cookies",response.data.data)
                             // Store user data in cookies
                             userDataUtils.setUserData(response.data.data);
                             dispatch(setCredentials({ authData: response.data.data }));
                         } catch (error) {
                             console.log(error)
                         }
-                        console.log('false')
                     }
                 } else {
                     // No valid token found - logout and redirect

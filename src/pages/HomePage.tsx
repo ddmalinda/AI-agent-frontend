@@ -4,11 +4,12 @@ import {useNavigate } from "react-router-dom";
 import { pagesLinkpath } from "../path/LinkPath";
 import CommoneWrapLayout from "../commen/CommoneWrapLayout";
 import AddAiAgent from "../commen/componets/buttons/AddAiAgent";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BusinessModal from "./homePage/BusinessModal";
 import BusinessCartsList from "./homePage/BusinessCartsList";
 import apiClient from "../util/api";
 import { fetchBusinessDetails } from "../freatuers/business/businessSlice";
+import { useBusinessDataFetching } from "../hooks/useBusinessDataFetching";
 
 type Props = {}
 
@@ -31,11 +32,8 @@ export default function HomePage({ }: Props) {
   const businessFetching = useSelector((state: RootState) => state.business.businessFetching)
   const businessError = useSelector((state: RootState) => state.business.businessFetchingError)
 
-  useEffect(() => {
-    if (userId && (!businessDetails || businessDetails.length===0) && businessFetching!=='pending') {
-      dispatch(fetchBusinessDetails(userId));
-    } 
-  }, [userId, dispatch])
+  // Custom hook for business data fetching
+      useBusinessDataFetching();
 
   // Handle opening edit modal
   const handleOpenModel = () => {
@@ -63,7 +61,6 @@ export default function HomePage({ }: Props) {
   }
   const handleBusinessButton=(businessId:number)=>{
    navigate(pagesLinkpath.productListPage+`/${businessId}`);
-   console.log(businessDetails)
   }
   return (
     <CommoneWrapLayout>

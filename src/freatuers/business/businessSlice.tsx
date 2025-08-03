@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { setBusinessProducts } from "../products/productsSlice";
 import { pagesLinkpath } from "../../path/LinkPath";
 import apiClient from "../../util/api";
-
-
-
 
 interface BusinessState {
     businessDetails: BusinessDetails[], // Array of BusinessDetails
@@ -20,10 +18,25 @@ interface BusinessDetails {
 }
 
 export const fetchBusinessDetails = createAsyncThunk(
-    pagesLinkpath.homePage, async (userId: number) => {
-        const response = await apiClient.get(`/api/users/${userId}/businesses`);
-        console.log(response.data)
-        return response.data;
+    pagesLinkpath.homePage, async (userId: number,{ dispatch }) => {
+        try{
+            const response = await apiClient.get(`/api/users/${userId}/businesses`);
+            console.log(response.data)
+            
+            if(Array.isArray(response.data)){
+                response.data.forEach((business)=>{
+                    if(business.products && Array.isArray(business.products)){
+                        dispatch(setBusinessProducts({
+                            businessId: business.id,
+                            products: business.products
+                        }));
+                    }
+                })
+            }
+            return response.data;
+        }catch(error){
+            console.log(error)
+        }
     })
 // Initial State
 const initialState: BusinessState = {

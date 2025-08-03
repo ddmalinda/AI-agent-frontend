@@ -91,7 +91,7 @@ export const {
 }=productsSlice.actions;
 
 export const selectBusinessProducts = (state:{products:ProductState},businessId:number)=>
-    state.products.businesses[businessId]?.products||[];
+    state?.products.businesses[businessId]?.products||[]||null;
 
 export const selectBusinessProductsError = (state: { products: ProductState }, businessId: number) => 
     state.products.businesses[businessId]?.error || null;

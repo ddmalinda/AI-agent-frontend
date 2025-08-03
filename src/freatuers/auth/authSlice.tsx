@@ -33,7 +33,6 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setCredentials: (state, action: PayloadAction<{ authData: authData }>) => {
-            console.log(action.payload)
             const { authData } = action.payload;
             state.userId= authData.userId;
             state.email=authData.email;
