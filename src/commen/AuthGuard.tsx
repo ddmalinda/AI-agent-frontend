@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { tokenUtils } from "../util/tokenUtils";
 import { logout, setCredentials } from "../freatuers/auth/authSlice";
 import { pagesLinkpath } from "../path/LinkPath";
 import { userDataUtils } from "../util/userDataUtils";
+import apiClient from "../util/api";
 
 interface AuthGuardProps {
     children: React.ReactNode;
@@ -23,11 +24,26 @@ export default function AuthGuard({ children }: AuthGuardProps) {
                 if (tokenUtils.isLoggedIn()) {
 
                     const userData = userDataUtils.getUserData();
+                    console.log("isAuthenticated",!isAuthenticated,"userData",userData)
+
                     if (userData && !isAuthenticated) {
                         // User has valid token but Redux store is empty - restore auth state
                         dispatch(setCredentials({ authData: userData }));
+                        console.log('true')
+                    } 
+                    else if(!userData){
+                        try {
+                            const response = await apiClient.get('/api/auth/profile')
+                            console.log("fetch data when not user data in cookies",response.data.data)
+                            // Store user data in cookies
+                            userDataUtils.setUserData(response.data.data);
+                            dispatch(setCredentials({ authData: response.data.data }));
+                        } catch (error) {
+                            console.log(error)
+                        }
+                        console.log('false')
                     }
-                } else { 
+                } else {
                     // No valid token found - logout and redirect
                     dispatch(logout());
                     navigate(pagesLinkpath.login, { replace: true });

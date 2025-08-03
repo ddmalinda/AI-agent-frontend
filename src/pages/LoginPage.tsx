@@ -5,7 +5,6 @@ import { useDispatch } from "react-redux";
 import { pagesLinkpath } from "../path/LinkPath";
 import apiClient from "../util/api";
 import { useState } from "react"
-import Cookies from 'js-cookie';
 import { tokenUtils } from "../util/tokenUtils";
 import { userDataUtils } from "../util/userDataUtils";
 type Props = {}
@@ -38,8 +37,6 @@ export default function LoginPage({ }: Props) {
             // Store user data in cookies
             userDataUtils.setUserData(response.data);
 
-            console.log('Stored token:', Cookies.get('token'));
-            console.log('Stored user data:', userDataUtils.getUserData());
 
             // Update redux store
             dispatch(setCredentials({ authData: response.data }));
